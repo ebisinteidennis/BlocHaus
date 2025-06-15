@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlockHaus - Crypto Real Estate Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#" style="color: #4a5568;">
+                <i class="fas fa-home me-2"></i>BlockHaus
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#buy">Buy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#rent">Rent</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sell">Sell</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#invest">Invest</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#getStartedModal">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100 pt-5">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <p class="text-uppercase text-white-50 mb-3">THE FUTURE OF REAL ESTATE IS HERE 🏠</p>
+                        <h1 class="display-4 fw-bold text-white mb-4">
+                            Buy, Sell, Rent & Invest in<br>
+                            Real Estate with Crypto
+                        </h1>
+                        <p class="lead text-white-75 mb-4">
+                            Experience a new way to buy, sell, rent, and invest in real estate with cryptocurrency.
+                            With secure, fast, and transparent blockchain transactions, you can own properties on
+                            your terms—no bank charges, no hidden fees.
+                        </p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <button class="btn btn-outline-light btn-lg">Explore properties</button>
+                            <button class="btn btn-primary btn-lg">Start Investing</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <div class="property-card">
+                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Modern Villa" class="img-fluid rounded-3">
+                            <div class="property-info">
+                                <div class="property-badge">
+                                    <span class="badge bg-primary">10BTC</span>
+                                    <span class="text-white ms-2">≈ $835,404</span>
+                                </div>
+                                <h6 class="text-white mt-2 mb-0">Modern Waterfront Villa</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section bg-white py-5" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="about-content">
+                        <div class="text-center mb-5">
+                            <h2 class="display-5 fw-bold mb-4">🧱 Platform Name: BlocHaus</h2>
+                            <h3 class="h4 text-primary mb-4">🪙 Token Symbol: $BHS (Solana SPL Token)</h3>
+                        </div>
+
+                        <div class="about-section-item mb-5">
+                            <h3 class="h4 fw-bold mb-3">🔍 Overview</h3>
+                            <p class="lead">
+                                BlocHaus is a decentralized real estate platform where users can buy, rent, sell, or invest in real estate using blockchain and cryptocurrency.
+                            </p>
+                            <p>
+                                We're using the power of Web3, Solana, and tokenization to make property transactions faster, safer, and borderless — while still giving users access to real consultants for every deal.
+                            </p>
+                        </div>
+
+                        <div class="about-section-item mb-5">
+                            <h3 class="h4 fw-bold mb-3">🚀 Our Vision</h3>
+                            <blockquote class="blockquote text-center">
+                                <p class="mb-0 fs-4 text-primary">"Decentralizing Real Estate, One Bloc at a Time."</p>
+                            </blockquote>
+                            <p class="mt-3">
+                                To make property ownership and investing globally accessible — whether you're renting a short-term apartment or co-investing in luxury real estate, BlocHaus lets you do it with your wallet and our $BHS token.
+                            </p>
+                        </div>
+
+                        <div class="about-section-item mb-5">
+                            <h3 class="h4 fw-bold mb-3">🔐 Core Features</h3>
+                            
+                            <div class="feature-item mb-4">
+                                <h5 class="fw-semibold text-primary">✅ Buy, Rent, Sell, or Invest in Properties</h5>
+                                <ul class="list-unstyled ms-3">
+                                    <li>• Users can explore verified properties, connect their wallet, and transact using $BHS.</li>
+                                    <li>• Sellers and property owners can list their homes or apartments for sale or lease.</li>
+                                </ul>
+                            </div>
+
+                            <div class="feature-item mb-4">
+                                <h5 class="fw-semibold text-primary">🪙 Token-Powered Transactions</h5>
+                                <ul class="list-unstyled ms-3">
+                                    <li>• All payments are done in $BHS — our native Solana token.</li>
+                                    <li>• Future features include staking, rewards, and governance access.</li>
+                                </ul>
+                            </div>
+
+                            <div class="feature-item mb-4">
+                                <h5 class="fw-semibold text-primary">🤝 Real-Time Consultant Chat</h5>
+                                <ul class="list-unstyled ms-3">
+                                    <li>• Every transaction is backed by a dedicated BlocHaus consultant.</li>
+                                    <li>• Users can chat via our integrated support system before, during, or after a deal.</li>
+                                </ul>
+                            </div>
+
+                            <div class="feature-item mb-4">
+                                <h5 class="fw-semibold text-primary">🌍 Global, Starting Local</h5>
+                                <p class="mb-2">Initial launch markets:</p>
+                                <ul class="list-unstyled ms-3">
+                                    <li>• Dubai, UAE</li>
+                                    <li>• USA</li>
+                                </ul>
+                                <p class="mb-0">Future markets: Turkey, Bali, Cape Town, Lisbon, Paris.</p>
+                            </div>
+
+                            <div class="feature-item mb-4">
+                                <h5 class="fw-semibold text-primary">🔗 Blockchain Escrow & Transparency</h5>
+                                <ul class="list-unstyled ms-3">
+                                    <li>• Funds are held in Solana smart contract escrow until conditions are met.</li>
+                                    <li>• Buyers, sellers, and renters get transparent transaction records on-chain.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="about-section-item mb-5">
+                            <h3 class="h4 fw-bold mb-3">🏠 Target Users</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="user-type-card p-3 border rounded">
+                                        <p class="mb-0">• Digital nomads and crypto investors</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="user-type-card p-3 border rounded">
+                                        <p class="mb-0">• First-time buyers priced out of local markets</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="user-type-card p-3 border rounded">
+                                        <p class="mb-0">• Short-term and long-term renters</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="user-type-card p-3 border rounded">
+                                        <p class="mb-0">• Real estate sellers wanting faster, borderless deals</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="user-type-card p-3 border rounded">
+                                        <p class="mb-0">• Early crypto adopters looking for real-world asset exposure</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-section-item">
+                            <h3 class="h4 fw-bold mb-3">🔒 Security & Trust</h3>
+                            <div class="security-features">
+                                <div class="security-item mb-3 p-3 bg-light rounded">
+                                    <p class="mb-0">• All properties are KYC-verified and document-checked by BlocHaus consultants.</p>
+                                </div>
+                                <div class="security-item mb-3 p-3 bg-light rounded">
+                                    <p class="mb-0">• All funds are secured with smart contract escrow until deals are closed.</p>
+                                </div>
+                                <div class="security-item mb-3 p-3 bg-light rounded">
+                                    <p class="mb-0">• Buyers and renters can schedule virtual or in-person inspections.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#getStartedModal">
+                                Get Started Today
+                            </button>
+                            <button class="btn btn-outline-primary btn-lg">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h2 class="text-white mb-4">Why BlockHaus</h2>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="text-white">Secure Transactions</h5>
+                        <p class="text-white-75">
+                            All property transactions are secured by blockchain technology,
+                            providing immutable records and transparent processes.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5 class="text-white">Fast Settlements</h5>
+                        <p class="text-white-75">
+                            Close deals in days instead of months with our streamlined
+                            process, bypassing traditional banking delays.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Property Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="search-card">
+                        <h3 class="text-center mb-4">Your Real Estate Journey Starts Here</h3>
+                        <p class="text-center text-muted mb-4">
+                            Join thousands already buying, selling, renting, and investing through
+                            BlockHaus' blockchain-powered platform. Experience secure, transparent
+                            transactions with no middlemen.
+                        </p>
+                        
+                        <div class="search-tabs mb-4">
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="searchType" id="buyTab" checked>
+                                <label class="btn btn-outline-primary" for="buyTab">Buy</label>
+                                
+                                <input type="radio" class="btn-check" name="searchType" id="rentTab">
+                                <label class="btn btn-outline-primary" for="rentTab">Rent</label>
+                                
+                                <input type="radio" class="btn-check" name="searchType" id="sellTab">
+                                <label class="btn btn-outline-primary" for="sellTab">Sell</label>
+                                
+                                <input type="radio" class="btn-check" name="searchType" id="investTab">
+                                <label class="btn btn-outline-primary" for="investTab">Invest</label>
+                            </div>
+                        </div>
+
+                        <form class="search-form">
+                            <div class="mb-3">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" placeholder="Address, City or zip">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Property Type</label>
+                                <select class="form-select">
+                                    <option>Select property</option>
+                                    <option>House</option>
+                                    <option>Apartment</option>
+                                    <option>Villa</option>
+                                    <option>Condo</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Cryptocurrency Type</label>
+                                <select class="form-select">
+                                    <option>Select currency</option>
+                                    <option>Bitcoin (BTC)</option>
+                                    <option>Ethereum (ETH)</option>
+                                    <option>BlockHaus Token (BHS)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Price Range</label>
+                                <input type="text" class="form-control" placeholder="Min. price - Max. Price">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100 btn-lg">Search Properties</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Listings Section -->
+    <section class="listings-section bg-white py-5" id="buy">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">New Listings</h2>
+                <p class="lead text-muted">
+                    Discover the latest properties available for buying, renting, or investing with crypto. Secure your next home or
+                    investment with fast, transparent blockchain transactions.
+                </p>
+            </div>
+
+            <div class="listing-tabs mb-4">
+                <div class="btn-group justify-content-center w-100" role="group">
+                    <input type="radio" class="btn-check" name="listingType" id="buyListings" checked>
+                    <label class="btn btn-primary" for="buyListings">Buy</label>
+                    
+                    <input type="radio" class="btn-check" name="listingType" id="rentListings">
+                    <label class="btn btn-outline-primary" for="rentListings">Rent</label>
+                    
+                    <input type="radio" class="btn-check" name="listingType" id="sellListings">
+                    <label class="btn btn-outline-primary" for="sellListings">Sell</label>
+                    
+                    <input type="radio" class="btn-check" name="listingType" id="investListings">
+                    <label class="btn btn-outline-primary" for="investListings">Invest</label>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-listing-card">
+                        <div class="property-image">
+                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Modern Villa" class="img-fluid">
+                            <div class="property-price">
+                                <span class="crypto-price">835,404 $BHS</span>
+                                <span class="usd-price">≈ $835,404</span>
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h5>Modern Waterfront Villa</h5>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Austin, Texas</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed"></i> 4 Beds</span>
+                                <span><i class="fas fa-bath"></i> 3 Baths</span>
+                                <span><i class="fas fa-ruler-combined"></i> 2,500 Sq ft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-listing-card">
+                        <div class="property-image">
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Modern Villa" class="img-fluid">
+                            <div class="property-price">
+                                <span class="crypto-price">835,404 $BHS</span>
+                                <span class="usd-price">≈ $835,404</span>
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h5>Modern Waterfront Villa</h5>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Austin, Texas</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed"></i> 4 Beds</span>
+                                <span><i class="fas fa-bath"></i> 3 Baths</span>
+                                <span><i class="fas fa-ruler-combined"></i> 2,500 Sq ft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-listing-card">
+                        <div class="property-image">
+                            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Modern Villa" class="img-fluid">
+                            <div class="property-price">
+                                <span class="crypto-price">835,404 $BHS</span>
+                                <span class="usd-price">≈ $835,404</span>
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h5>Modern Waterfront Villa</h5>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Austin, Texas</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed"></i> 4 Beds</span>
+                                <span><i class="fas fa-bath"></i> 3 Baths</span>
+                                <span><i class="fas fa-ruler-combined"></i> 2,500 Sq ft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-listing-card">
+                        <div class="property-image">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Luxury Villa" class="img-fluid">
+                            <div class="property-price">
+                                <span class="crypto-price">1,253,106 $BHS</span>
+                                <span class="usd-price">≈ $1,253,106</span>
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h5>Luxury Mediterranean Villa</h5>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Dubai, UAE</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed"></i> 5 Beds</span>
+                                <span><i class="fas fa-bath"></i> 4 Baths</span>
+                                <span><i class="fas fa-ruler-combined"></i> 3,200 Sq ft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-listing-card">
+                        <div class="property-image">
+                            <img src="https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Modern House" class="img-fluid">
+                            <div class="property-price">
+                                <span class="crypto-price">1,002,485 $BHS</span>
+                                <span class="usd-price">≈ $1,002,485</span>
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h5>Contemporary Beachfront House</h5>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Dubai, UAE</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed"></i> 4 Beds</span>
+                                <span><i class="fas fa-bath"></i> 3 Baths</span>
+                                <span><i class="fas fa-ruler-combined"></i> 2,800 Sq ft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-listing-card">
+                        <div class="property-image">
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Modern Villa" class="img-fluid">
+                            <div class="property-price">
+                                <span class="crypto-price">668,323 $BHS</span>
+                                <span class="usd-price">≈ $668,323</span>
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h5>Minimalist Glass Villa</h5>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Austin, Texas</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed"></i> 3 Beds</span>
+                                <span><i class="fas fa-bath"></i> 2 Baths</span>
+                                <span><i class="fas fa-ruler-combined"></i> 2,100 Sq ft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="newsletter-image">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Modern Villa" class="img-fluid rounded-3">
+                        <div class="property-info-overlay">
+                            <div class="property-badge">
+                                <span class="badge bg-primary">10BTC</span>
+                                <span class="text-white ms-2">≈ $835,404</span>
+                            </div>
+                            <h6 class="text-white mt-2 mb-0">Modern Waterfront Villa</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="newsletter-content">
+                        <h2 class="text-white mb-4">Subscribe To Our Newsletter!</h2>
+                        <p class="text-white-75 mb-4">
+                            Subscribe to our Newsletter for instant updates on newly listed properties.
+                        </p>
+                        <form class="newsletter-form">
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control form-control-lg" placeholder="Enter your email">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section bg-white py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Testimonials</h2>
+                <p class="lead text-muted">
+                    Hear from those who've transformed their real estate experience with cryptocurrency.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p class="mb-4">
+                                "The future of real estate is here. I purchased my dream home using Ethereum. No banks, no lengthy
+                                approval processes, just a very smooth transaction on the blockchain. The smart contract made
+                                everything really transparent and secure."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="John Doe" class="rounded-circle">
+                                </div>
+                                <div class="author-info">
+                                    <h6 class="mb-0">John Doe</h6>
+                                    <small class="text-muted">Property Investor</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p class="mb-4">
+                                "The future of real estate is here. I purchased my dream home using Ethereum. No banks, no lengthy
+                                approval processes, just a very smooth transaction on the blockchain. The smart contract made
+                                everything really transparent and secure."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Sarah Johnson" class="rounded-circle">
+                                </div>
+                                <div class="author-info">
+                                    <h6 class="mb-0">Sarah Johnson</h6>
+                                    <small class="text-muted">Real Estate Buyer</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p class="mb-4">
+                                "The future of real estate is here. I purchased my dream home using Ethereum. No banks, no lengthy
+                                approval processes, just a very smooth transaction on the blockchain. The smart contract made
+                                everything really transparent and secure."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Mike Chen" class="rounded-circle">
+                                </div>
+                                <div class="author-info">
+                                    <h6 class="mb-0">Mike Chen</h6>
+                                    <small class="text-muted">Crypto Investor</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Log In to BlockHaus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Log In</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#getStartedModal" data-bs-dismiss="modal">Get Started</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Started Modal -->
+    <div class="modal fade" id="getStartedModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Get Started with BlockHaus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">I'm interested in</label>
+                            <select class="form-select" required>
+                                <option value="">Select your interest</option>
+                                <option value="buying">Buying Properties</option>
+                                <option value="selling">Selling Properties</option>
+                                <option value="renting">Renting Properties</option>
+                                <option value="investing">Investing in Real Estate</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register & Chat with Consultant</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Log In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Location Modal -->
+    <div class="modal fade" id="buyLocationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Welcome to BlockHaus! What would you like to buy?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-outline-primary btn-lg" onclick="selectLocation('dubai')">
+                            <i class="fas fa-building me-2"></i>
+                            I'd like to buy a property in Dubai
+                        </button>
+                        <button class="btn btn-outline-primary btn-lg" onclick="selectLocation('us')">
+                            <i class="fas fa-flag-usa me-2"></i>
+                            I'd like to buy a property in US
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
