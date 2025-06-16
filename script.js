@@ -1,4 +1,8 @@
-// BlockHaus JavaScript - Interactive functionality
+// BlockHaus JavaScript - Interactive functionality with Backend Integration
+
+// API Configuration
+const API_BASE = './backend/api';
+let currentUser = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
@@ -8,7 +12,87 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAnimations();
     initializeBuyLocationModal();
     initializeFormHandlers();
+    loadProperties();
+    checkUserSession();
 });
+
+// Check if user is logged in
+async function checkUserSession() {
+    try {
+        const response = await fetch(`${API_BASE}/auth.php?action=check_session`);
+        const data = await response.json();
+        if (data.success && data.user) {
+            currentUser = data.user;
+            updateUIForLoggedInUser();
+        }
+    } catch (error) {
+        console.log('No active session');
+    }
+}
+
+// Load properties from backend
+async function loadProperties() {
+    try {
+        const response = await fetch(`${API_BASE}/properties.php`);
+        const data = await response.json();
+        
+        if (data.success) {
+            updatePropertyListings(data.data);
+        }
+    } catch (error) {
+        console.error('Error loading properties:', error);
+    }
+}
+
+// Update property listings in the DOM
+function updatePropertyListings(properties) {
+    const listingsContainer = document.querySelector('.listings-section .row');
+    if (!listingsContainer) return;
+    
+    // Clear existing listings except the first few static ones
+    const existingCards = listingsContainer.querySelectorAll('.col-lg-4');
+    existingCards.forEach((card, index) => {
+        if (index >= 6) { // Keep first 6 static cards
+            card.remove();
+        }
+    });
+    
+    // Add new properties from database
+    properties.forEach(property => {
+        const propertyCard = createPropertyCard(property);
+        listingsContainer.appendChild(propertyCard);
+    });
+}
+
+// Create property card element
+function createPropertyCard(property) {
+    const col = document.createElement('div');
+    col.className = 'col-lg-4 col-md-6';
+    
+    const mainImage = property.images && property.images.length > 0 ? property.images[0] : 'https://via.placeholder.com/600x400';
+    
+    col.innerHTML = `
+        <div class="property-listing-card" data-property-id="${property.id}">
+            <div class="property-image">
+                <img src="${mainImage}" alt="${property.title}" class="img-fluid">
+                <div class="property-price">
+                    <span class="crypto-price">${property.price_formatted.bhs}</span>
+                </div>
+            </div>
+            <div class="property-details">
+                <h5>${property.title}</h5>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> ${property.location}</p>
+                <div class="property-features">
+                    <span><i class="fas fa-bed"></i> ${property.bedrooms} Beds</span>
+                    <span><i class="fas fa-bath"></i> ${property.bathrooms} Baths</span>
+                    <span><i class="fas fa-ruler-combined"></i> ${property.square_feet.toLocaleString()} Sq ft</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return col;
+}
 
 // Navigation functionality
 function initializeNavigation() {
@@ -90,67 +174,89 @@ function updateSearchPlaceholders(tabId) {
     switch(tabId) {
         case 'buyTab':
             locationInput.placeholder = 'Where would you like to buy?';
-            priceInput.placeholder = 'Budget range in BTC/ETH';
+            priceInput.placeholder = 'Budget range in $BHS';
             break;
         case 'rentTab':
             locationInput.placeholder = 'Where would you like to rent?';
-            priceInput.placeholder = 'Monthly rent range';
+            priceInput.placeholder = 'Monthly rent range in $BHS';
             break;
         case 'sellTab':
             locationInput.placeholder = 'Property location to sell';
-            priceInput.placeholder = 'Expected price range';
+            priceInput.placeholder = 'Expected price range in $BHS';
             break;
         case 'investTab':
             locationInput.placeholder = 'Investment location preference';
-            priceInput.placeholder = 'Investment budget range';
+            priceInput.placeholder = 'Investment budget in $BHS';
             break;
     }
 }
 
 // Handle property search
-function handlePropertySearch() {
+async function handlePropertySearch() {
     const formData = new FormData(document.querySelector('.search-form'));
-    const searchData = Object.fromEntries(formData);
+    const searchData = {
+        search_type: document.querySelector('input[name="searchType"]:checked').id.replace('Tab', ''),
+        location: formData.get('location') || '',
+        property_type: formData.get('property_type') || '',
+        cryptocurrency_type: formData.get('cryptocurrency_type') || '',
+        price_range: formData.get('price_range') || ''
+    };
     
     // Show loading state
     const submitBtn = document.querySelector('.search-form button[type="submit"]');
     const originalText = submitBtn.textContent;
-    submitBtn.classList.add('loading');
+    submitBtn.textContent = 'Searching...';
     submitBtn.disabled = true;
     
-    // Simulate search (replace with actual API call)
-    setTimeout(() => {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
+    try {
+        const response = await fetch(`${API_BASE}/properties.php?action=search`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(searchData)
+        });
         
-        // Show results or redirect to results page
-        showSearchResults(searchData);
-    }, 2000);
+        const data = await response.json();
+        
+        if (data.success) {
+            updatePropertyListings(data.data);
+            showSearchResults(data.data.length);
+        } else {
+            showNotification('Search failed: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Search error:', error);
+        showNotification('Search failed. Please try again.', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
 }
 
 // Show search results
-function showSearchResults(searchData) {
-    // For now, scroll to listings section
+function showSearchResults(count) {
+    // Scroll to listings section
     document.getElementById('buy').scrollIntoView({ behavior: 'smooth' });
     
     // Show notification
-    showNotification('Search completed! Showing available properties.', 'success');
+    showNotification(`Found ${count} properties matching your search.`, 'success');
 }
 
 // Filter listings based on selected tab
-function filterListings(tabId) {
-    const listings = document.querySelectorAll('.property-listing-card');
+async function filterListings(tabId) {
+    const listingType = tabId.replace('Listings', '');
     
-    // Add filter animation
-    listings.forEach((listing, index) => {
-        listing.style.opacity = '0.5';
-        listing.style.transform = 'scale(0.95)';
+    try {
+        const response = await fetch(`${API_BASE}/properties.php?listing_type=${listingType}`);
+        const data = await response.json();
         
-        setTimeout(() => {
-            listing.style.opacity = '1';
-            listing.style.transform = 'scale(1)';
-        }, index * 100);
-    });
+        if (data.success) {
+            updatePropertyListings(data.data);
+        }
+    } catch (error) {
+        console.error('Filter error:', error);
+    }
 }
 
 // Initialize buy location modal
@@ -170,7 +276,7 @@ function initializeBuyLocationModal() {
 }
 
 // Handle location selection
-function selectLocation(location) {
+async function selectLocation(location) {
     const modal = bootstrap.Modal.getInstance(document.getElementById('buyLocationModal'));
     modal.hide();
     
@@ -184,27 +290,17 @@ function selectLocation(location) {
         showNotification('Excellent! Showing properties in the US.', 'success');
     }
     
-    // Filter listings based on location
-    filterListingsByLocation(location);
-}
-
-// Filter listings by location
-function filterListingsByLocation(location) {
-    const listings = document.querySelectorAll('.property-listing-card');
-    
-    listings.forEach(listing => {
-        const locationText = listing.querySelector('.location').textContent.toLowerCase();
-        const shouldShow = location === 'dubai' ? 
-            locationText.includes('dubai') : 
-            locationText.includes('texas') || locationText.includes('austin');
+    // Load properties for selected location
+    try {
+        const response = await fetch(`${API_BASE}/properties.php?action=location&location=${location}`);
+        const data = await response.json();
         
-        if (shouldShow) {
-            listing.style.display = 'block';
-            listing.style.opacity = '1';
-        } else {
-            listing.style.opacity = '0.3';
+        if (data.success) {
+            updatePropertyListings(data.data);
         }
-    });
+    } catch (error) {
+        console.error('Location filter error:', error);
+    }
 }
 
 // Initialize animations
@@ -262,61 +358,132 @@ function initializeFormHandlers() {
 }
 
 // Handle login
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const loginData = Object.fromEntries(formData);
+    const loginData = {
+        email: formData.get('email'),
+        password: formData.get('password')
+    };
     
     // Show loading state
     const submitBtn = e.target.querySelector('button[type="submit"]');
-    submitBtn.classList.add('loading');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Logging in...';
     submitBtn.disabled = true;
     
-    // Simulate login (replace with actual authentication)
-    setTimeout(() => {
-        submitBtn.classList.remove('loading');
+    try {
+        const response = await fetch(`${API_BASE}/auth.php?action=login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            currentUser = data.user;
+            
+            // Store user data for dashboard
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            
+            // Close modal and show success
+            const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            modal.hide();
+            
+            showNotification(`Welcome back, ${data.user.name}! Redirecting to dashboard...`, 'success');
+            
+            // Redirect to dashboard after a short delay
+            setTimeout(() => {
+                if (data.user.role === 'admin') {
+                    window.location.href = 'backend/admin/index.php';
+                } else {
+                    window.location.href = 'user-dashboard.html';
+                }
+            }, 1500);
+            
+            // Reset form
+            e.target.reset();
+        } else {
+            showNotification('Login failed: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showNotification('Login failed. Please try again.', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        
-        // Close modal and show success
-        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-        modal.hide();
-        
-        showNotification('Welcome back to BlockHaus!', 'success');
-        
-        // Update UI for logged in state
-        updateUIForLoggedInUser();
-    }, 1500);
+    }
 }
 
 // Handle registration
-function handleRegistration(e) {
+async function handleRegistration(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const registerData = Object.fromEntries(formData);
+    const registerData = {
+        full_name: formData.get('full_name'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        interest_type: formData.get('interest_type')
+    };
     
     // Show loading state
     const submitBtn = e.target.querySelector('button[type="submit"]');
-    submitBtn.classList.add('loading');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Creating Account...';
     submitBtn.disabled = true;
     
-    // Simulate registration (replace with actual API call)
-    setTimeout(() => {
-        submitBtn.classList.remove('loading');
+    try {
+        const response = await fetch(`${API_BASE}/auth.php?action=register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(registerData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Store user data for dashboard
+            const userData = {
+                id: data.user_id,
+                name: registerData.full_name,
+                email: registerData.email,
+                interest_type: registerData.interest_type,
+                role: 'user'
+            };
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Close modal and show success
+            const modal = bootstrap.Modal.getInstance(document.getElementById('getStartedModal'));
+            modal.hide();
+            
+            showNotification('Registration successful! Redirecting to your dashboard...', 'success');
+            
+            // Redirect to dashboard after a short delay
+            setTimeout(() => {
+                window.location.href = 'user-dashboard.html';
+            }, 2000);
+            
+            // Reset form
+            e.target.reset();
+        } else {
+            showNotification('Registration failed: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        showNotification('Registration failed. Please try again.', 'error');
+    } finally {
+        submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        
-        // Close modal and show success
-        const modal = bootstrap.Modal.getInstance(document.getElementById('getStartedModal'));
-        modal.hide();
-        
-        showNotification('Registration successful! A consultant will contact you shortly.', 'success');
-        
-        // Show consultant chat modal or redirect to dashboard
-        showConsultantChat();
-    }, 2000);
+    }
 }
 
 // Handle newsletter signup
-function handleNewsletterSignup(e) {
+async function handleNewsletterSignup(e) {
     e.preventDefault();
     const email = e.target.querySelector('input[type="email"]').value;
     
@@ -326,16 +493,30 @@ function handleNewsletterSignup(e) {
     submitBtn.textContent = 'Subscribing...';
     submitBtn.disabled = true;
     
-    // Simulate subscription (replace with actual API call)
-    setTimeout(() => {
+    try {
+        const response = await fetch(`${API_BASE}/newsletter.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('Successfully subscribed to our newsletter!', 'success');
+            e.target.reset();
+        } else {
+            showNotification('Subscription failed: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Newsletter error:', error);
+        showNotification('Subscription failed. Please try again.', 'error');
+    } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        
-        showNotification('Successfully subscribed to our newsletter!', 'success');
-        
-        // Clear form
-        e.target.reset();
-    }, 1500);
+    }
 }
 
 // Update UI for logged in user
@@ -347,9 +528,39 @@ function updateUIForLoggedInUser() {
         loginBtn.textContent = 'Dashboard';
         loginBtn.removeAttribute('data-bs-toggle');
         loginBtn.removeAttribute('data-bs-target');
-        loginBtn.onclick = () => window.location.href = 'dashboard.html';
         
-        getStartedBtn.style.display = 'none';
+        // Redirect based on user role
+        if (currentUser.role === 'admin') {
+            loginBtn.onclick = () => window.location.href = 'backend/admin/index.php';
+        } else {
+            loginBtn.onclick = () => window.location.href = 'user-dashboard.html';
+        }
+        
+        getStartedBtn.textContent = 'Logout';
+        getStartedBtn.removeAttribute('data-bs-toggle');
+        getStartedBtn.removeAttribute('data-bs-target');
+        getStartedBtn.onclick = handleLogout;
+    }
+}
+
+// Handle logout
+async function handleLogout() {
+    try {
+        const response = await fetch(`${API_BASE}/auth.php?action=logout`, {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            currentUser = null;
+            showNotification('Logged out successfully!', 'success');
+            
+            // Reset UI
+            location.reload();
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
     }
 }
 
@@ -416,6 +627,7 @@ function showNotification(message, type = 'info') {
 document.addEventListener('click', function(e) {
     if (e.target.closest('.property-listing-card')) {
         const card = e.target.closest('.property-listing-card');
+        const propertyId = card.dataset.propertyId;
         const propertyName = card.querySelector('h5').textContent;
         
         // Add click animation
@@ -424,10 +636,56 @@ document.addEventListener('click', function(e) {
             card.style.transform = '';
         }, 150);
         
-        // Show property details (placeholder)
-        showNotification(`Viewing details for ${propertyName}`, 'info');
+        // Navigate to property details page
+        if (propertyId) {
+            window.location.href = `property-details.html?id=${propertyId}`;
+        } else {
+            // For static cards without propertyId, show notification
+            showNotification(`Viewing details for ${propertyName}`, 'info');
+            // You can add a default ID or handle static properties differently
+            window.location.href = `property-details.html?id=1`;
+        }
     }
 });
+
+// Dropdown functionality for About Us section
+function toggleDropdown(id) {
+    const content = document.getElementById(id);
+    const toggle = content.previousElementSibling;
+    
+    if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        toggle.classList.add('active');
+        
+        // Add smooth slide down animation
+        content.style.maxHeight = '0px';
+        content.style.overflow = 'hidden';
+        content.style.transition = 'max-height 0.3s ease-out';
+        
+        setTimeout(() => {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }, 10);
+        
+        setTimeout(() => {
+            content.style.maxHeight = 'none';
+            content.style.overflow = 'visible';
+        }, 300);
+    } else {
+        // Add smooth slide up animation
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.overflow = 'hidden';
+        content.style.transition = 'max-height 0.3s ease-out';
+        
+        setTimeout(() => {
+            content.style.maxHeight = '0px';
+        }, 10);
+        
+        setTimeout(() => {
+            content.style.display = 'none';
+            toggle.classList.remove('active');
+        }, 300);
+    }
+}
 
 // Keyboard navigation
 document.addEventListener('keydown', function(e) {
@@ -456,29 +714,6 @@ window.addEventListener('resize', function() {
     }
 });
 
-// Initialize price updates (simulate real-time crypto prices)
-function initializePriceUpdates() {
-    const cryptoPrices = document.querySelectorAll('.crypto-price');
-    const usdPrices = document.querySelectorAll('.usd-price');
-    
-    // Simulate price updates every 30 seconds
-    setInterval(() => {
-        cryptoPrices.forEach((priceEl, index) => {
-            const currentBTC = parseFloat(priceEl.textContent.replace(/[^\d.]/g, ''));
-            const fluctuation = (Math.random() - 0.5) * 0.1; // ±5% fluctuation
-            const newBTC = Math.max(0.1, currentBTC + fluctuation);
-            const newUSD = Math.round(newBTC * 83540.4); // Approximate BTC to USD
-            
-            priceEl.textContent = `${newBTC.toFixed(1)} BTC`;
-            if (usdPrices[index]) {
-                usdPrices[index].textContent = `≈ $${newUSD.toLocaleString()}`;
-            }
-        });
-    }, 30000);
-}
-
-// Initialize price updates
-initializePriceUpdates();
-
 // Export functions for global access
 window.selectLocation = selectLocation;
+window.toggleDropdown = toggleDropdown;

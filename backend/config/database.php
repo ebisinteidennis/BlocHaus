@@ -2,9 +2,9 @@
 // Database configuration for BlockHaus
 class Database {
     private $host = 'localhost';
-    private $db_name = 'blockhaus_db';
-    private $username = 'root';
-    private $password = '';
+    private $db_name = 'blocaavc_db';
+    private $username = 'blocaavc_db';
+    private $password = 'PRD8ySw.L3&w';
     public $conn;
 
     public function getConnection() {

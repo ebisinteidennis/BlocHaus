@@ -156,6 +156,9 @@ $recent_consultations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <a class="nav-link" href="consultations.php">
                             <i class="fas fa-comments me-2"></i>Consultations
                         </a>
+                        <a class="nav-link" href="chat.php">
+                            <i class="fas fa-comment-dots me-2"></i>Chat Management
+                        </a>
                         <a class="nav-link" href="newsletter.php">
                             <i class="fas fa-envelope me-2"></i>Newsletter
                         </a>

@@ -40,12 +40,12 @@ class PropertiesAPI {
             }
             
             if (!empty($filters['min_price'])) {
-                $query .= " AND price_usd >= :min_price";
+                $query .= " AND price_bhs >= :min_price";
                 $params[':min_price'] = $filters['min_price'];
             }
             
             if (!empty($filters['max_price'])) {
-                $query .= " AND price_usd <= :max_price";
+                $query .= " AND price_bhs <= :max_price";
                 $params[':max_price'] = $filters['max_price'];
             }
             
@@ -81,9 +81,7 @@ class PropertiesAPI {
             foreach ($properties as &$property) {
                 $property['images'] = json_decode($property['images'], true) ?: [];
                 $property['price_formatted'] = [
-                    'btc' => number_format($property['price_btc'], 1) . ' BTC',
-                    'usd' => '≈ $' . number_format($property['price_usd'], 0),
-                    'bhs' => $property['price_bhs'] ? number_format($property['price_bhs'], 0) . ' $BHS' : null
+                    'bhs' => number_format($property['price_bhs'], 0) . ' $BHS'
                 ];
             }
             
@@ -109,9 +107,7 @@ class PropertiesAPI {
                 $property = $stmt->fetch(PDO::FETCH_ASSOC);
                 $property['images'] = json_decode($property['images'], true) ?: [];
                 $property['price_formatted'] = [
-                    'btc' => number_format($property['price_btc'], 1) . ' BTC',
-                    'usd' => '≈ $' . number_format($property['price_usd'], 0),
-                    'bhs' => $property['price_bhs'] ? number_format($property['price_bhs'], 0) . ' BHS' : null
+                    'bhs' => number_format($property['price_bhs'], 0) . ' $BHS'
                 ];
                 
                 return [
@@ -222,6 +218,13 @@ switch ($method) {
                         echo json_encode($properties->getProperty($_GET['id']));
                     } else {
                         echo json_encode($properties->getProperties($_GET));
+                    }
+                    break;
+                case 'get_property':
+                    if (isset($_GET['id'])) {
+                        echo json_encode($properties->getProperty($_GET['id']));
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Property ID required']);
                     }
                     break;
                 case 'featured':

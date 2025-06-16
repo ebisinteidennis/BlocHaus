@@ -116,6 +116,34 @@ class AuthAPI {
         return ['success' => true, 'message' => 'Logged out successfully'];
     }
     
+    public function checkSession() {
+        session_start();
+        
+        if (isset($_SESSION['user_id'])) {
+            // Get user data from database
+            $query = "SELECT id, full_name, email, role, interest_type FROM users WHERE id = :user_id AND is_active = 1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':user_id', $_SESSION['user_id']);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() === 1) {
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                return [
+                    'success' => true,
+                    'user' => [
+                        'id' => $user['id'],
+                        'name' => $user['full_name'],
+                        'email' => $user['email'],
+                        'role' => $user['role'],
+                        'interest_type' => $user['interest_type']
+                    ]
+                ];
+            }
+        }
+        
+        return ['success' => false, 'message' => 'No active session'];
+    }
+    
     private function createConsultationRequest($user_id, $interest_type) {
         $consultation_type = 'general';
         if ($interest_type === 'investing') {
@@ -149,6 +177,19 @@ switch ($method) {
                     break;
                 case 'logout':
                     echo json_encode($auth->logout());
+                    break;
+                default:
+                    echo json_encode(['success' => false, 'message' => 'Invalid action']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Action required']);
+        }
+        break;
+    case 'GET':
+        if (isset($_GET['action'])) {
+            switch ($_GET['action']) {
+                case 'check_session':
+                    echo json_encode($auth->checkSession());
                     break;
                 default:
                     echo json_encode(['success' => false, 'message' => 'Invalid action']);

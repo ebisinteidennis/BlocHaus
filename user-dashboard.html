@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - BlockHaus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .dashboard-sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .dashboard-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-sidebar .nav-link:hover,
+        .dashboard-sidebar .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .chat-container {
+            height: 500px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid #ddd;
+            background: white;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        
+        .message.user {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .message.consultant {
+            background: #e9ecef;
+            color: #333;
+        }
+        
+        .message.system {
+            background: #fff3cd;
+            color: #856404;
+            text-align: center;
+            max-width: 100%;
+            font-style: italic;
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .property-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .property-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #10b981;
+            color: white;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html" style="color: #4a5568;">
+                <img src="WhatsApp Image 2025-06-15 at 03.19.58_ae118555.jpg" alt="BlockHaus Logo" style="height: 40px; width: auto;" class="me-2">
+                BlockHaus
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        <span id="userName">User</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="showProfile()"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSettings()"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 px-0">
+                <div class="dashboard-sidebar">
+                    <div class="p-3">
+                        <h5 class="text-white mb-4">Dashboard</h5>
+                        <nav class="nav flex-column">
+                            <a class="nav-link active" href="#" onclick="showDashboard()">
+                                <i class="fas fa-tachometer-alt me-2"></i>Overview
+                            </a>
+                            <a class="nav-link" href="#" onclick="showProperties()">
+                                <i class="fas fa-building me-2"></i>Properties
+                            </a>
+                            <a class="nav-link" href="#" onclick="showConsultations()">
+                                <i class="fas fa-comments me-2"></i>Consultations
+                            </a>
+                            <a class="nav-link" href="#" onclick="showChat()">
+                                <i class="fas fa-comment-dots me-2"></i>Chat with Consultant
+                            </a>
+                            <a class="nav-link" href="#" onclick="showFavorites()">
+                                <i class="fas fa-heart me-2"></i>Favorites
+                            </a>
+                            <a class="nav-link" href="#" onclick="showTransactions()">
+                                <i class="fas fa-exchange-alt me-2"></i>Transactions
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10">
+                <div class="p-4">
+                    <!-- Dashboard Overview -->
+                    <div id="dashboardContent" class="content-section">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Welcome to Your Dashboard</h2>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary" onclick="showChat()">
+                                    <i class="fas fa-comment-dots me-2"></i>Chat with Consultant
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="showProperties()">
+                                    <i class="fas fa-search me-2"></i>Browse Properties
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card stats-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-eye fa-2x mb-3"></i>
+                                        <h3 id="viewedProperties">0</h3>
+                                        <p class="mb-0">Properties Viewed</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card stats-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-heart fa-2x mb-3"></i>
+                                        <h3 id="favoriteProperties">0</h3>
+                                        <p class="mb-0">Favorites</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card stats-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-comments fa-2x mb-3"></i>
+                                        <h3 id="activeConsultations">1</h3>
+                                        <p class="mb-0">Active Consultations</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card stats-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-coins fa-2x mb-3"></i>
+                                        <h3>0 $BHS</h3>
+                                        <p class="mb-0">Wallet Balance</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Recent Activity</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="activity-item d-flex align-items-center mb-3">
+                                            <div class="activity-icon bg-primary text-white rounded-circle me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-user-plus"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">Account Created</h6>
+                                                <small class="text-muted">Welcome to BlockHaus! Your consultation request has been submitted.</small>
+                                            </div>
+                                        </div>
+                                        <div class="activity-item d-flex align-items-center mb-3">
+                                            <div class="activity-icon bg-success text-white rounded-circle me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-comment-dots"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">Consultant Assigned</h6>
+                                                <small class="text-muted">A consultant has been assigned to help you with your real estate needs.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Quick Actions</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-primary" onclick="showChat()">
+                                                <i class="fas fa-comment-dots me-2"></i>Start Chat
+                                            </button>
+                                            <button class="btn btn-outline-primary" onclick="showProperties()">
+                                                <i class="fas fa-search me-2"></i>Browse Properties
+                                            </button>
+                                            <button class="btn btn-outline-secondary" onclick="showProfile()">
+                                                <i class="fas fa-user me-2"></i>Update Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Section -->
+                    <div id="chatContent" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Chat with Consultant</h2>
+                            <button class="btn btn-outline-secondary" onclick="showDashboard()">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="chat-container">
+                                    <div class="chat-header">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-user-tie me-2"></i>
+                                            Consultant Chat
+                                        </h5>
+                                        <small>Your dedicated real estate consultant is here to help</small>
+                                    </div>
+                                    <div class="chat-messages" id="chatMessages">
+                                        <!-- Messages will be loaded here -->
+                                    </div>
+                                    <div class="chat-input">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="messageInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                                            <button class="btn btn-primary" onclick="sendMessage()">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Consultation Info</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <strong>Status:</strong>
+                                            <span class="badge bg-success ms-2" id="consultationStatus">Active</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Consultant:</strong><br>
+                                            <small class="text-muted" id="consultantName">Loading...</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Interest:</strong><br>
+                                            <small class="text-muted" id="consultationInterest">Real Estate Investment</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Started:</strong><br>
+                                            <small class="text-muted" id="consultationDate">Today</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Quick Questions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('What properties do you recommend for first-time buyers?')">
+                                                First-time buyer advice
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('How does crypto payment work?')">
+                                                Crypto payments
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('Can you show me properties in Dubai?')">
+                                                Dubai properties
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm" onclick="sendQuickMessage('What are the investment opportunities?')">
+                                                Investment options
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Properties Section -->
+                    <div id="propertiesContent" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Browse Properties</h2>
+                            <button class="btn btn-outline-secondary" onclick="showDashboard()">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </button>
+                        </div>
+
+                        <div class="row g-4" id="propertiesGrid">
+                            <!-- Properties will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Other sections would go here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let currentUser = null;
+        let chatMessages = [];
+        let chatInterval = null;
+        let currentConsultationId = null;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserSession();
+            loadUserData();
+            loadConsultationInfo();
+        });
+
+        // Check if user is logged in
+        function checkUserSession() {
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+                document.getElementById('userName').textContent = currentUser.name || 'User';
+                document.getElementById('consultationInterest').textContent = currentUser.interest_type || 'Real Estate Investment';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Load user data and stats
+        function loadUserData() {
+            document.getElementById('viewedProperties').textContent = Math.floor(Math.random() * 20);
+            document.getElementById('favoriteProperties').textContent = Math.floor(Math.random() * 5);
+            document.getElementById('consultationDate').textContent = new Date().toLocaleDateString();
+        }
+
+        // Load consultation info
+        async function loadConsultationInfo() {
+            try {
+                const response = await fetch('./backend/api/chat.php?action=consultation');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const consultation = data.data;
+                    document.getElementById('consultantName').textContent = consultation.consultant_name || 'John Consultant';
+                    document.getElementById('consultationStatus').textContent = consultation.status || 'Active';
+                    document.getElementById('consultationDate').textContent = new Date(consultation.created_at).toLocaleDateString();
+                    currentConsultationId = consultation.id;
+                }
+            } catch (error) {
+                console.error('Error loading consultation info:', error);
+            }
+        }
+
+        // Navigation functions
+        function showDashboard() {
+            hideAllSections();
+            document.getElementById('dashboardContent').style.display = 'block';
+            updateActiveNav(0);
+            stopChatPolling();
+        }
+
+        function showProperties() {
+            hideAllSections();
+            document.getElementById('propertiesContent').style.display = 'block';
+            loadProperties();
+            updateActiveNav(1);
+            stopChatPolling();
+        }
+
+        function showConsultations() {
+            showNotification('Consultations section coming soon!', 'info');
+        }
+
+        function showChat() {
+            hideAllSections();
+            document.getElementById('chatContent').style.display = 'block';
+            updateActiveNav(3);
+            loadChatMessages();
+            startChatPolling();
+        }
+
+        function showFavorites() {
+            showNotification('Favorites section coming soon!', 'info');
+        }
+
+        function showTransactions() {
+            showNotification('Transactions section coming soon!', 'info');
+        }
+
+        function showProfile() {
+            showNotification('Profile settings coming soon!', 'info');
+        }
+
+        function showSettings() {
+            showNotification('Settings coming soon!', 'info');
+        }
+
+        function hideAllSections() {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.style.display = 'none');
+        }
+
+        function updateActiveNav(index) {
+            const navLinks = document.querySelectorAll('.dashboard-sidebar .nav-link');
+            navLinks.forEach((link, i) => {
+                if (i === index) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Chat functions
+        async function loadChatMessages() {
+            try {
+                const response = await fetch('./backend/api/chat.php?action=messages');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentConsultationId = data.consultation_id;
+                    displayMessages(data.data);
+                } else {
+                    console.error('Failed to load messages:', data.message);
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        function displayMessages(messages) {
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML = '';
+            
+            // Add welcome message if no messages
+            if (messages.length === 0) {
+                const welcomeMessage = document.createElement('div');
+                welcomeMessage.className = 'message system';
+                welcomeMessage.innerHTML = `
+                    <i class="fas fa-info-circle me-2"></i>
+                    Welcome! Your consultant will be with you shortly. Feel free to ask any questions about properties, investments, or our services.
+                `;
+                messagesContainer.appendChild(welcomeMessage);
+            }
+            
+            messages.forEach(message => {
+                const messageDiv = document.createElement('div');
+                const senderClass = message.role === 'user' ? 'user' : 'consultant';
+                messageDiv.className = `message ${senderClass}`;
+                
+                const timestamp = new Date(message.created_at).toLocaleTimeString();
+                messageDiv.innerHTML = `
+                    <strong>${message.full_name}:</strong><br>
+                    ${message.message}
+                    <br><small class="text-muted">${timestamp}</small>
+                `;
+                
+                messagesContainer.appendChild(messageDiv);
+            });
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                try {
+                    const response = await fetch('./backend/api/chat.php?action=send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: message })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        input.value = '';
+                        loadChatMessages(); // Reload messages to show the new one
+                    } else {
+                        showNotification('Failed to send message: ' + data.message, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    showNotification('Failed to send message. Please try again.', 'error');
+                }
+            }
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function startChatPolling() {
+            // Poll for new messages every 3 seconds
+            chatInterval = setInterval(loadChatMessages, 3000);
+        }
+
+        function stopChatPolling() {
+            if (chatInterval) {
+                clearInterval(chatInterval);
+                chatInterval = null;
+            }
+        }
+
+        // Load properties
+        async function loadProperties() {
+            try {
+                const response = await fetch('./backend/api/properties.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayProperties(data.data);
+                }
+            } catch (error) {
+                console.error('Error loading properties:', error);
+                showNotification('Failed to load properties', 'error');
+            }
+        }
+
+        function displayProperties(properties) {
+            const grid = document.getElementById('propertiesGrid');
+            grid.innerHTML = '';
+            
+            properties.forEach(property => {
+                const images = property.images || [];
+                const mainImage = images.length > 0 ? images[0] : 'https://via.placeholder.com/400x200';
+                
+                const propertyCard = document.createElement('div');
+                propertyCard.className = 'col-lg-4 col-md-6';
+                propertyCard.innerHTML = `
+                    <div class="property-card">
+                        <div class="property-image" style="background-image: url('${mainImage}')">
+                            <div class="property-status">Available</div>
+                        </div>
+                        <div class="p-3">
+                            <h5 class="mb-2">${property.title}</h5>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                ${property.location}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">${property.listing_type}</span>
+                                <strong class="text-primary">${property.price_formatted?.bhs || property.price_bhs} $BHS</strong>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted small mb-3">
+                                <span><i class="fas fa-bed"></i> ${property.bedrooms}</span>
+                                <span><i class="fas fa-bath"></i> ${property.bathrooms}</span>
+                                <span><i class="fas fa-ruler-combined"></i> ${property.square_feet} sq ft</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary btn-sm flex-fill" onclick="viewProperty(${property.id})">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="toggleFavorite(${property.id})">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(propertyCard);
+            });
+        }
+
+        function viewProperty(id) {
+            showNotification(`Viewing property ${id}. Full property details coming soon!`, 'info');
+        }
+
+        function toggleFavorite(id) {
+            showNotification(`Property ${id} added to favorites!`, 'success');
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('userData');
+            window.location.href = 'index.html';
+        }
+
+        // Utility function to show notifications
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            `;
+            
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', function() {
+            stopChatPolling();
+        });
+    </script>
+</body>
+</html>

@@ -1,259 +1,283 @@
-# BlockHaus - Crypto Real Estate Platform
+# BlocHaus - Crypto Real Estate Platform
 
-A modern crypto real estate platform that allows users to buy, sell, rent, and invest in properties using cryptocurrency. Built with HTML, CSS, JavaScript frontend and PHP backend with admin dashboard.
+A decentralized real estate platform where users can buy, rent, sell, or invest in real estate using blockchain and cryptocurrency, specifically the $BHS (BlockHaus) token.
 
-## Features
+## 🚀 Features
 
 ### Frontend Features
-- **Responsive Design**: Beautiful purple gradient design matching the provided mockups
-- **Property Listings**: Display properties with dual pricing (BTC/USD/BHS format)
-- **Location-Based Search**: Properties in US and Dubai locations
-- **Interactive Search**: Property search with filters for location, type, and cryptocurrency
-- **User Authentication**: Login and registration modals
-- **Consultant Chat**: Registration includes consultant consultation setup
-- **Newsletter Subscription**: Email subscription functionality
-- **Testimonials**: Customer testimonials section
-- **Mobile Responsive**: Works perfectly on all devices
+- **Modern Responsive Design**: Built with Bootstrap 5 and custom CSS
+- **Property Listings**: Dynamic property cards with real-time data from backend
+- **Search & Filter**: Advanced search functionality by location, type, and price
+- **User Authentication**: Login and registration with backend integration
+- **$BHS Token Integration**: All pricing displayed in $BHS currency
+- **Interactive UI**: Smooth animations and user-friendly interface
+- **Location-based Filtering**: Separate views for Dubai and US properties
 
 ### Backend Features
-- **PHP API**: RESTful API endpoints for all functionality
-- **MySQL Database**: Comprehensive database schema
-- **Admin Dashboard**: Full admin panel for managing the platform
-- **User Management**: User registration, login, and profile management
-- **Property Management**: CRUD operations for properties
-- **Consultation System**: Chat system between users and consultants
-- **Newsletter System**: Email subscription management
-- **Analytics**: Search tracking and user analytics
+- **RESTful API**: Complete API for properties, authentication, and user management
+- **Database Integration**: MySQL database with comprehensive schema
+- **Admin Dashboard**: Full admin panel for managing properties, users, and site content
+- **User Management**: Role-based access control (Admin, User, Consultant)
+- **Property Management**: CRUD operations for properties with image support
+- **Authentication System**: Secure login/registration with session management
+- **Data Validation**: Server-side validation and error handling
 
-## Project Structure
+### Admin Panel Features
+- **Dashboard Overview**: Statistics and recent activity
+- **Property Management**: Add, edit, delete properties with image management
+- **User Management**: Manage users, roles, and account status
+- **Real-time Updates**: Live data from database
+- **Responsive Design**: Works on all devices
+
+## 🏗️ Project Structure
 
 ```
-BlockHaus/
-├── index.html                 # Main frontend page
-├── styles.css                 # Custom CSS with purple gradient theme
-├── script.js                  # Frontend JavaScript functionality
+BlocHaus/
+├── index.html              # Main homepage
+├── about.html              # About page
+├── styles.css              # Main stylesheet
+├── script.js               # Frontend JavaScript with API integration
+├── README.md               # This file
 ├── backend/
 │   ├── config/
-│   │   └── database.php       # Database configuration
-│   ├── setup/
-│   │   └── database_setup.sql # Database schema and sample data
+│   │   └── database.php    # Database configuration
 │   ├── api/
-│   │   ├── auth.php          # Authentication API endpoints
-│   │   └── properties.php    # Properties API endpoints
-│   └── admin/
-│       ├── index.php         # Admin dashboard
-│       ├── login.php         # Admin login page
-│       └── logout.php        # Admin logout script
-└── README.md                 # This file
+│   │   ├── auth.php        # Authentication API
+│   │   └── properties.php  # Properties API
+│   ├── admin/
+│   │   ├── index.php       # Admin dashboard
+│   │   ├── login.php       # Admin login
+│   │   ├── logout.php      # Admin logout
+│   │   ├── properties.php  # Property management
+│   │   └── users.php       # User management
+│   └── setup/
+│       └── database_setup.sql # Database schema and sample data
+└── [Property Images]       # Dubai property images (IMG-*.jpg)
 ```
 
-## Setup Instructions
+## 🛠️ Installation & Setup
 
 ### Prerequisites
-- Web server (Apache/Nginx)
 - PHP 7.4 or higher
 - MySQL 5.7 or higher
-- Modern web browser
+- Web server (Apache/Nginx) or PHP built-in server
 
-### Installation Steps
+### Step 1: Clone/Download the Project
+```bash
+# If using git
+git clone [repository-url]
+cd BlocHaus
 
-1. **Clone/Download the Project**
-   ```bash
-   # Place all files in your web server directory
-   # For XAMPP: C:/xampp/htdocs/blockhaus/
-   # For WAMP: C:/wamp64/www/blockhaus/
-   ```
+# Or download and extract the ZIP file
+```
 
-2. **Database Setup**
-   - Open phpMyAdmin or your MySQL client
-   - Import the database schema:
-     ```sql
-     # Run the SQL file: backend/setup/database_setup.sql
-     ```
-   - Or manually create the database:
-     ```sql
-     CREATE DATABASE blockhaus_db;
-     ```
-   - Then import the SQL file
+### Step 2: Database Setup
+1. Create a MySQL database named `blockhaus_db`
+2. Update database credentials in `backend/config/database.php`
+3. Run the database setup:
+```bash
+cd backend
+php -r "
+require_once 'config/database.php';
+\$database = new Database();
+\$conn = \$database->getConnection();
+\$sql = file_get_contents('setup/database_setup.sql');
+\$statements = explode(';', \$sql);
+foreach (\$statements as \$statement) {
+    \$statement = trim(\$statement);
+    if (!empty(\$statement)) {
+        try {
+            \$conn->exec(\$statement);
+            echo 'Executed: ' . substr(\$statement, 0, 50) . '...' . PHP_EOL;
+        } catch (Exception \$e) {
+            echo 'Error: ' . \$e->getMessage() . PHP_EOL;
+        }
+    }
+}
+echo 'Database setup completed!' . PHP_EOL;
+"
+```
 
-3. **Configure Database Connection**
-   - Edit `backend/config/database.php`
-   - Update database credentials if needed:
-     ```php
-     private $host = 'localhost';
-     private $db_name = 'blockhaus_db';
-     private $username = 'root';  // Your MySQL username
-     private $password = '';      // Your MySQL password
-     ```
+### Step 3: Start the Server
+```bash
+# Using PHP built-in server
+php -S localhost:8000
 
-4. **Set Permissions**
-   - Ensure web server has read/write access to the project directory
-   - For Linux/Mac:
-     ```bash
-     chmod -R 755 /path/to/blockhaus/
-     ```
+# Or configure your web server to point to the project directory
+```
 
-5. **Access the Application**
-   - Frontend: `http://localhost/blockhaus/index.html`
-   - Admin Panel: `http://localhost/blockhaus/backend/admin/login.php`
+### Step 4: Access the Application
+- **Frontend**: http://localhost:8000/index.html
+- **Admin Panel**: http://localhost:8000/backend/admin/login.php
 
-## Default Admin Credentials
-
-### Admin Account
+## 🔐 Default Admin Credentials
 - **Email**: admin@blockhaus.com
 - **Password**: password
 
-### Consultant Account
-- **Email**: consultant@blockhaus.com
-- **Password**: password
+## 💰 Currency System
 
-## API Endpoints
+The platform uses **$BHS (BlockHaus Token)** as the primary currency:
+- All property prices are displayed in $BHS
+- No USD or BTC pricing (as requested)
+- Consistent pricing across all property listings
+- Admin can set prices in $BHS when adding/editing properties
 
-### Authentication API (`backend/api/auth.php`)
-- `POST /auth.php?action=register` - User registration
-- `POST /auth.php?action=login` - User login
-- `POST /auth.php?action=logout` - User logout
+## 🏠 Property Management
 
-### Properties API (`backend/api/properties.php`)
-- `GET /properties.php` - Get all properties
-- `GET /properties.php?action=get&id={id}` - Get specific property
-- `GET /properties.php?action=featured` - Get featured properties
-- `GET /properties.php?action=location&location={location}` - Get properties by location
-- `POST /properties.php?action=search` - Search properties
+### Adding Properties
+1. Login to admin panel
+2. Go to Properties → Add Property
+3. Fill in property details:
+   - Title and description
+   - Location (Dubai, UAE or US locations)
+   - Property type (House, Apartment, Villa, Condo)
+   - Bedrooms, bathrooms, square footage
+   - Price in $BHS
+   - Listing type (Buy, Rent, Sell, Invest)
+   - Images (comma-separated filenames or URLs)
+   - Featured status
 
-## Database Schema
+### Dubai Rental Properties
+The system includes pre-loaded Dubai rental properties with:
+- **Location**: All set to "Dubai, UAE"
+- **Section**: All categorized under "rent"
+- **Images**: Real property images (IMG-20250615-WA*.jpg)
+- **Pricing**: Competitive rental prices in $BHS
 
-### Main Tables
-- **users**: User accounts (customers, admins, consultants)
-- **properties**: Property listings with crypto pricing
-- **consultations**: Consultation requests and chat sessions
-- **chat_messages**: Messages between users and consultants
-- **newsletter_subscriptions**: Email newsletter subscribers
-- **property_searches**: Search analytics and tracking
-- **transactions**: Future crypto transaction records
+### Image Management
+- Images can be uploaded to the project directory
+- Reference images by filename in the admin panel
+- Support for both local files and external URLs
+- Automatic image processing and display
 
-## Key Features Implementation
+## 👥 User Management
 
-### Dual Pricing System
-Properties display prices in multiple formats:
-- Bitcoin (BTC): `10.0 BTC`
-- USD equivalent: `≈ $835,404`
-- BlockHaus Token (BHS): `835,404 BHS`
+### User Roles
+- **Admin**: Full access to admin panel and all features
+- **User**: Regular users who can browse and interact with properties
+- **Consultant**: Can manage consultations and assist users
 
-### Location-Based Filtering
-- **US Properties**: Austin, Texas locations
-- **Dubai Properties**: Dubai, UAE locations
-- Automatic filtering based on user selection
+### User Registration
+- Users register through the frontend
+- Automatic consultation request creation
+- Email validation and secure password hashing
+- Interest type tracking (buying, selling, renting, investing)
 
-### Consultant Chat System
-- Users register and automatically get consultation request
-- Admin can assign consultants to users
-- Chat system for real-time communication
+## 🔧 API Endpoints
 
-### Admin Dashboard Features
-- User management and analytics
-- Property CRUD operations
-- Consultation management
-- Newsletter subscriber management
-- Real-time statistics and reporting
+### Authentication API (`/backend/api/auth.php`)
+- `POST ?action=register` - User registration
+- `POST ?action=login` - User login
+- `POST ?action=logout` - User logout
 
-## Customization
+### Properties API (`/backend/api/properties.php`)
+- `GET` - Get all properties
+- `GET ?action=featured` - Get featured properties
+- `GET ?action=location&location=dubai` - Get properties by location
+- `POST ?action=search` - Search properties
 
-### Styling
-- Main colors defined in CSS variables in `styles.css`
-- Purple gradient theme: `#8b5cf6` to `#ec4899`
-- Bootstrap 5 for responsive layout
+## 🎨 Frontend Features
 
-### Adding New Properties
-1. Access admin dashboard
-2. Navigate to Properties section
-3. Add new property with:
-   - Title, description, location
-   - Property type (house, apartment, villa, condo)
-   - Pricing in BTC and USD
-   - Property images
-   - Listing type (buy, rent, sell, invest)
+### Interactive Elements
+- **Property Search**: Real-time search with backend integration
+- **Location Selection**: Modal for choosing Dubai or US properties
+- **Authentication**: Login/registration modals with form validation
+- **Responsive Design**: Mobile-friendly interface
+- **Smooth Animations**: CSS transitions and JavaScript interactions
 
-### Extending API
-- Add new endpoints in `backend/api/` directory
-- Follow existing pattern for authentication and error handling
-- Update database schema as needed
+### Property Display
+- **Dynamic Loading**: Properties loaded from database
+- **Filtering**: By type (buy, rent, sell, invest)
+- **Search**: By location, type, and price range
+- **$BHS Pricing**: Consistent currency display
 
-## Security Features
+## 🔒 Security Features
 
-- Password hashing using PHP's `password_hash()`
-- SQL injection prevention with prepared statements
-- Session management for authentication
-- Input validation and sanitization
-- CORS headers for API security
+- **Password Hashing**: Secure bcrypt password hashing
+- **Session Management**: Secure PHP sessions
+- **SQL Injection Prevention**: Prepared statements
+- **XSS Protection**: Input sanitization
+- **Role-based Access**: Admin panel access control
 
-## Browser Compatibility
+## 📱 Responsive Design
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-- Mobile browsers (iOS Safari, Chrome Mobile)
+The platform is fully responsive and works on:
+- Desktop computers
+- Tablets
+- Mobile phones
+- All modern browsers
 
-## Performance Optimizations
+## 🚀 Deployment
 
-- Optimized images with proper sizing
-- CSS and JavaScript minification ready
-- Database indexing on frequently queried columns
-- Lazy loading for property images
-- Responsive image loading
+### Production Deployment
+1. Upload files to web server
+2. Configure database connection
+3. Set up SSL certificate
+4. Configure web server (Apache/Nginx)
+5. Set proper file permissions
+6. Update API base URL in script.js if needed
 
-## Future Enhancements
+### Environment Configuration
+- Update `backend/config/database.php` with production database credentials
+- Ensure proper file permissions for image uploads
+- Configure web server for clean URLs (optional)
 
-1. **Crypto Integration**
-   - Real blockchain transactions
-   - Wallet connectivity (MetaMask, etc.)
-   - Smart contracts for property transfers
+## 🔄 Future Enhancements
 
-2. **Advanced Features**
-   - Virtual property tours
-   - Real-time chat with WebSocket
-   - Advanced search filters
-   - Property comparison tool
-   - Investment portfolio tracking
+### Planned Features
+- **Blockchain Integration**: Real Solana blockchain integration
+- **Wallet Connection**: MetaMask and Phantom wallet support
+- **Smart Contracts**: Automated escrow and transactions
+- **Chat System**: Real-time consultant chat
+- **Advanced Search**: More filtering options
+- **Property Details**: Detailed property pages
+- **Image Upload**: Direct image upload functionality
+- **Email Notifications**: Automated email system
+- **Analytics Dashboard**: Advanced reporting
 
-3. **Mobile App**
-   - React Native or Flutter app
-   - Push notifications
-   - Offline property browsing
+### Technical Improvements
+- **Caching**: Redis/Memcached integration
+- **CDN**: Content delivery network for images
+- **API Rate Limiting**: Prevent abuse
+- **Logging**: Comprehensive error and access logging
+- **Testing**: Unit and integration tests
+- **Documentation**: API documentation
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **Database Connection Error**
-   - Check MySQL service is running
-   - Verify database credentials in `config/database.php`
-   - Ensure database exists and is accessible
+**Database Connection Error**
+- Check database credentials in `backend/config/database.php`
+- Ensure MySQL server is running
+- Verify database exists and user has permissions
 
-2. **Admin Login Not Working**
-   - Verify database has been set up with sample data
-   - Check if admin user exists in users table
-   - Default password is "password" (hashed in database)
+**Images Not Loading**
+- Check image file paths
+- Ensure images are in the correct directory
+- Verify file permissions
 
-3. **Properties Not Loading**
-   - Check API endpoints are accessible
-   - Verify database has sample property data
-   - Check browser console for JavaScript errors
+**Admin Panel Access**
+- Use default credentials: admin@blockhaus.com / password
+- Check if database setup completed successfully
+- Verify session configuration
 
-4. **Styling Issues**
-   - Ensure Bootstrap CSS is loading
-   - Check custom CSS file path
-   - Verify Font Awesome icons are loading
+**API Errors**
+- Check browser console for JavaScript errors
+- Verify API endpoints are accessible
+- Check server error logs
 
-### Support
+## 📞 Support
 
 For technical support or questions:
-- Check the database setup SQL file for sample data
-- Verify all file permissions are correct
-- Ensure PHP extensions (PDO, MySQL) are enabled
-- Check web server error logs for detailed error messages
+- Check the troubleshooting section above
+- Review the code comments for implementation details
+- Ensure all setup steps were completed correctly
 
-## License
+## 📄 License
 
-This project is created for demonstration purposes. Modify and use as needed for your crypto real estate platform.
+This project is proprietary software for BlocHaus platform.
+
+---
+
+**BlocHaus** - Decentralizing Real Estate, One Bloc at a Time. 🏠⛓️
